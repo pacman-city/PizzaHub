@@ -1,21 +1,30 @@
-export function ProductItem({ title, price }) {
+import { useState } from 'react'
+import ContentLoader from 'react-content-loader'
+
+const pastryTypes = ['тонкое', 'традиционное']
+
+export function ProductItem({ imageUrl, title, types, sizes, price, category, rating }) {
+   const [activeType, setActiveType] = useState(types[0])
+   const [activeSize, setActiveSize] = useState(sizes[0])
+
    return (
       <div className="pizza-block">
-         <img
-            className="pizza-block__image"
-            src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
-            alt="Pizza"
-         />
+         <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
          <h4 className="pizza-block__title">{title}</h4>
          <div className="pizza-block__selector">
             <ul>
-               <li className="active">тонкое</li>
-               <li>традиционное</li>
+               {types.map(item => (
+                  <li key={item} className={item === activeType ? 'active' : ''} onClick={() => setActiveType(item)}>
+                     {pastryTypes[item]}
+                  </li>
+               ))}
             </ul>
             <ul>
-               <li className="active">26 см.</li>
-               <li>30 см.</li>
-               <li>40 см.</li>
+               {sizes.map(item => (
+                  <li key={item} className={item === activeSize ? 'active' : ''} onClick={() => setActiveSize(item)}>
+                     {item} см.
+                  </li>
+               ))}
             </ul>
          </div>
          <div className="pizza-block__bottom">
@@ -34,5 +43,25 @@ export function ProductItem({ title, price }) {
             </div>
          </div>
       </div>
+   )
+}
+
+export function Skeleton(props) {
+   return (
+      <ContentLoader
+         speed={2}
+         width={280}
+         height={465}
+         viewBox="0 0 280 465"
+         backgroundColor="#f3f3f3"
+         foregroundColor="#ecebeb"
+         {...props}
+      >
+         <circle cx="140" cy="132" r="102" />
+         <rect x="10" y="250" rx="5" ry="5" width="260" height="20" />
+         <rect x="10" y="285" rx="10" ry="10" width="260" height="82" />
+         <rect x="11" y="385" rx="14" ry="14" width="95" height="31" />
+         <rect x="120" y="382" rx="13" ry="13" width="152" height="45" />
+      </ContentLoader>
    )
 }

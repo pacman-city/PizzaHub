@@ -1,8 +1,8 @@
+import { Routes, Route } from 'react-router-dom'
 import { Header } from './components/Header'
-import { Categories } from './components/Categories'
-import { Sort } from './components/Sort'
-import { ProductItem } from './components/ProductItem'
-
+import { Home } from './pages/Home'
+import { Cart } from './pages/Cart'
+import { NotFound } from './pages/NotFound'
 import './scss/app.scss'
 
 function App() {
@@ -12,16 +12,11 @@ function App() {
 
          <div className="content">
             <div className="container">
-               <div className="content__top">
-                  <Categories />
-                  <Sort />
-               </div>
-
-               <h2 className="content__title">Все пиццы</h2>
-
-               <div className="content__items">
-                  <ProductItem title="Чизбургер-пицца" price={395} />
-               </div>
+               <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="*" element={<NotFound />} />
+               </Routes>
             </div>
          </div>
       </div>
