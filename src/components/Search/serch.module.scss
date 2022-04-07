@@ -1,0 +1,36 @@
+.container {
+   position: relative;
+}
+
+.input {
+   padding: 12px 20px 12px 42px;
+   width: 350px;
+   font-size: 16px;
+   border-radius: 10px;
+   border: 1px solid rgba(0, 0, 0, 0.1);
+
+   &:focus {
+      border: 1px solid rgba(0, 0, 0, 0.2);
+   }
+}
+
+.icon {
+   width: 22px;
+   height: 22px;
+   opacity: 0.3;
+   position: absolute;
+   top: 12px;
+   left: 14px;
+}
+
+.clearIcon {
+   opacity: 0.3;
+   position: absolute;
+   right: 15px;
+   top: 12px;
+   cursor: pointer;
+
+   &:hover {
+      opacity: 0.8;
+   }
+}
