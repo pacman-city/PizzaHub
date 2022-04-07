@@ -10,10 +10,11 @@ export function Home() {
       fetch('https://63481a210484786c6e91d7a6.mockapi.io/items')
          .then(res => res.json())
          .then(data => setProducts(data))
+      window.scrollTo(0, 0)
    }, [])
 
    return (
-      <>
+      <div className="container">
          <div className="content__top">
             <Categories />
             <Sort />
@@ -26,6 +27,6 @@ export function Home() {
                ? products.map(item => <ProductItem key={item.id} {...item} />)
                : [...Array(6)].map((_, i) => <Skeleton key={i} className="pizza-block" />)}
          </div>
-      </>
+      </div>
    )
 }

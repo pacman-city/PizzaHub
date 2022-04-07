@@ -27,4 +27,29 @@
          color: #7b7b7b;
       }
    }
+
+   @media screen and (max-width: 768px) {
+      padding: 25px 0 20px;
+
+      &__logo {
+         max-width: 220px;
+      }
+   }
+
+   @media screen and (max-width: 576px) {
+      .container {
+         flex-direction: column;
+         row-gap: 25px;
+         align-items: start;
+      }
+
+      &__logo {
+         max-width: unset;
+         justify-self: unset;
+      }
+
+      &__cart {
+         margin: 0 auto;
+      }
+   }
 }
