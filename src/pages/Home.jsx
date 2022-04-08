@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { Categories } from '../components/Categories'
 import { Sort } from '../components/Sort'
 import { ProductItem, Skeleton } from '../components/ProductItem'
 import { Pagination } from '../components/Pagination/Pagination'
+import { SearchContext } from '../App'
 
-export function Home({ searchValue }) {
+export function Home() {
+   const { searchValue } = useContext(SearchContext)
    const [products, setProducts] = useState(null)
    const [currentPage, setCurrentPage] = useState(1)
    const [activeCategory, setActiveCategory] = useState(0)
