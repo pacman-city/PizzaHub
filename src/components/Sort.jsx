@@ -1,12 +1,17 @@
 import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { setSort } from '../redux/reducers/filter-reducer'
 
-const listItems = ['популярности', 'цене', 'алфавиту']
+const listItems = ['rating', 'price', 'title']
+const listTitles = { rating: 'популярности', price: 'цене', title: 'алфавиту' }
 
-export function Sort({ sort, setSort }) {
+export function Sort() {
    const [isOpen, setIsOpen] = useState(false)
+   const dispatch = useDispatch()
+   const sort = useSelector(state => state.filter.sort)
 
-   const handleOnClick = index => {
-      setSort(index)
+   const handleOnClick = key => {
+      dispatch(setSort(key))
       setIsOpen(false)
    }
 
@@ -23,19 +28,15 @@ export function Sort({ sort, setSort }) {
                />
             </svg>
             <b>Сортировка по:</b>
-            <span onClick={() => setIsOpen(!isOpen)}>{listItems[sort]}</span>
+            <span onClick={() => setIsOpen(!isOpen)}>{listTitles[sort]}</span>
          </div>
 
          {isOpen && (
             <div className="sort__popup">
                <ul>
-                  {listItems.map((item, index) => (
-                     <li
-                        className={listItems[sort] === item ? 'active' : ''}
-                        onClick={() => handleOnClick(index)}
-                        key={item}
-                     >
-                        {item}
+                  {listItems.map(key => (
+                     <li className={key === sort ? 'active' : ''} onClick={() => handleOnClick(key)} key={key}>
+                        {listTitles[key]}
                      </li>
                   ))}
                </ul>
