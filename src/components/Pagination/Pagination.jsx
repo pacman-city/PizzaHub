@@ -1,11 +1,10 @@
 import ReactPaginate from 'react-paginate'
+import { useDispatch } from 'react-redux'
+import { setCurrentPage } from '../../redux/reducers/page-reducer'
 import styles from './Pagination.module.scss'
 
-export function Pagination({ onPageChangeHandler }) {
-   const handlePageClick = event => {
-      onPageChangeHandler(event.selected + 1)
-   }
-   const pageCount = 3
+export function Pagination() {
+   const dispatch = useDispatch()
 
    return (
       <ReactPaginate
@@ -13,9 +12,9 @@ export function Pagination({ onPageChangeHandler }) {
          breakLabel="..."
          nextLabel=">"
          previousLabel="<"
-         onPageChange={handlePageClick}
+         onPageChange={event => dispatch(setCurrentPage(event.selected + 1))}
          pageRangeDisplayed={3}
-         pageCount={pageCount}
+         pageCount={3}
          renderOnZeroPageCount={null}
       />
    )

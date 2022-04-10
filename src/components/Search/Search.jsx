@@ -1,9 +1,30 @@
-import { useContext } from 'react'
-import { SearchContext } from '../../App'
+import { useRef, useCallback, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import debounce from 'lodash.debounce'
+import { setSearchValue } from '../../redux/reducers/filter-reducer'
 import styles from './serch.module.scss'
 
 export function Search() {
-   const { searchValue, setSearchValue } = useContext(SearchContext)
+   const [searchInput, setSearchInput] = useState('')
+   const dispatch = useDispatch()
+
+   const inputRef = useRef()
+
+   const onClickHandler = () => {
+      dispatch(setSearchValue(''))
+      setSearchInput('')
+      inputRef.current.focus()
+   }
+
+   const requestSearch = useCallback(
+      debounce(value => dispatch(setSearchValue(value)), 300),
+      []
+   )
+
+   const onChangeHandler = event => {
+      setSearchInput(event.target.value)
+      requestSearch(event.target.value)
+   }
 
    return (
       <div className={styles.container}>
@@ -16,15 +37,16 @@ export function Search() {
             <path d="M0 0h48v48h-48z" fill="none" />
          </svg>
          <input
+            ref={inputRef}
             className={styles.input}
-            value={searchValue}
-            onChange={event => setSearchValue(event.target.value)}
+            value={searchInput}
+            onChange={onChangeHandler}
             type="text"
             placeholder="Поиск пиццы..."
          />
-         {searchValue && (
+         {searchInput && (
             <svg
-               onClick={() => setSearchValue('')}
+               onClick={onClickHandler}
                className={styles.clearIcon}
                width="22"
                height="22"
