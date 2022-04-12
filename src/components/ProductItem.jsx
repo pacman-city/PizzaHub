@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import ContentLoader from 'react-content-loader'
-import { addItem } from '../redux/reducers/cart-reducer'
+import { addItem, selectCartItem } from '../redux/reducers/cart-reducer'
 
 const pastryTypes = ['тонкое', 'традиционное']
 
@@ -9,7 +9,7 @@ export function ProductItem({ id, imageUrl, title, types, sizes, price, category
    const [activeType, setActiveType] = useState(types[0])
    const [activeSize, setActiveSize] = useState(sizes[0])
    const dispatch = useDispatch()
-   const cartItem = useSelector(state => state.cart.items.find(obj => obj.id === id))
+   const cartItem = useSelector(selectCartItem(id))
 
    const onClickAdd = () => {
       const item = {

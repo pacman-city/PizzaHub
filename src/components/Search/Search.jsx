@@ -1,7 +1,7 @@
 import { useRef, useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import debounce from 'lodash.debounce'
-import { setSearchValue } from '../../redux/reducers/filter-reducer'
+import { setSearchValue } from '../../redux/reducers/filters-reducer'
 import styles from './serch.module.scss'
 
 export function Search() {

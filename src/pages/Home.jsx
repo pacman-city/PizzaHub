@@ -1,10 +1,10 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import qs from 'qs'
-import axios from 'axios'
 
-import { setFilters } from '../redux/reducers/filter-reducer'
+import { setFilters, selectFilters } from '../redux/reducers/filters-reducer'
+import { fetchProducts, selectProducts } from '../redux/reducers/products-reducer'
 
 import { Categories } from '../components/Categories'
 import { Sort } from '../components/Sort'
@@ -17,23 +17,24 @@ export function Home() {
    const isSearch = useRef(false)
    const isMounted = useRef(false)
 
-   const { categoryId, sort, searchValue, currentPage } = useSelector(state => state.filter)
+   const { items, status } = useSelector(selectProducts)
+   const { categoryId, sort, searchValue, currentPage } = useSelector(selectFilters)
 
-   const [products, setProducts] = useState(null)
-
-   const fetchPizzas = () => {
-      setProducts(null)
+   const getProducts = async () => {
       const params = new URLSearchParams({
          sortBy: sort,
          limit: 4,
          page: currentPage,
       })
+
       categoryId !== 0 && params.append('category', categoryId)
       searchValue && params.append('search', searchValue)
 
-      axios.get(`https://63481a210484786c6e91d7a6.mockapi.io/items?${params.toString()}`).then(res => {
-         setProducts(res.data)
-      })
+      const urlParams = params.toString()
+
+      dispatch(fetchProducts(urlParams))
+
+      window.scrollTo(0, 0)
    }
 
    useEffect(() => {
@@ -58,12 +59,11 @@ export function Home() {
    }, []) //eslint-disable-line
 
    useEffect(() => {
-      window.scrollTo(0, 0)
-      if (!isSearch.current) fetchPizzas()
+      if (!isSearch.current) getProducts()
       isSearch.current = false
    }, [categoryId, sort, searchValue, currentPage]) //eslint-disable-line
 
-   const productsArray = products && products.map(item => <ProductItem key={item.id} {...item} />)
+   const productsArray = status === 'success' && items.map(item => <ProductItem key={item.id} {...item} />)
    const skeletonsArray = [...Array(4)].map((_, i) => <Skeleton key={i} className="pizza-block" />)
 
    return (
@@ -74,7 +74,15 @@ export function Home() {
          </div>
 
          <h2 className="content__title">Все пиццы</h2>
-         <div className="content__items">{products ? productsArray : skeletonsArray}</div>
+         {status === 'error' && (
+            <div className="content__error">
+               <h2>
+                  Произошла ошибка <span>😕</span>
+               </h2>
+               <p>Не удалось загрузить пиццы. Попробуйте повторить попытку позже.</p>
+            </div>
+         )}
+         <div className="content__items">{status === 'loading' ? skeletonsArray : productsArray}</div>
          <Pagination />
       </div>
    )

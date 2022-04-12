@@ -1,15 +1,15 @@
 import { useState, useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { setSort } from '../redux/reducers/filter-reducer'
+import { setSort, selectSort } from '../redux/reducers/filters-reducer'
 
 const listItems = ['rating', 'price', 'title']
 const listTitles = { rating: 'популярности', price: 'цене', title: 'алфавиту' }
 
 export function Sort() {
    const [isOpen, setIsOpen] = useState(false)
-   const dispatch = useDispatch()
-   const sort = useSelector(state => state.filter.sort)
    const sortRef = useRef()
+   const dispatch = useDispatch()
+   const sort = useSelector(selectSort)
 
    const handleOnClick = key => {
       dispatch(setSort(key))

@@ -56,6 +56,22 @@ body {
          }
       }
    }
+
+   &__error {
+      margin: 100px auto;
+      width: 500px;
+      text-align: center;
+
+      h2 {
+         margin-bottom: 10px;
+         font-size: 28px;
+         font-weight: 700;
+      }
+
+      p {
+         font-size: 20px;
+      }
+   }
 }
 
 .container {

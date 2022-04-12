@@ -7,8 +7,8 @@ const initialState = {
    currentPage: 1,
 }
 
-const filterReducer = createSlice({
-   name: 'filter',
+const filtersReducer = createSlice({
+   name: 'filters',
    initialState,
    reducers: {
       setCategoryId(state, action) {
@@ -31,5 +31,9 @@ const filterReducer = createSlice({
    },
 })
 
-export const { setCategoryId, setSort, setSearchValue, setCurrentPage, setFilters } = filterReducer.actions
-export default filterReducer.reducer
+export default filtersReducer.reducer
+export const { setCategoryId, setSort, setSearchValue, setCurrentPage, setFilters } = filtersReducer.actions
+
+export const selectSort = state => state.filters.sort
+export const selectCategoryId = state => state.filters.categoryId
+export const selectFilters = state => state.filters

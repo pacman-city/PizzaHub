@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+
+import { selectCart } from '../redux/reducers/cart-reducer'
+
 import { Search } from './Search/Search'
 
 export function Header({ searchValue, setSearchValue }) {
-   const { items, totalPrice, totalCount } = useSelector(state => state.cart)
+   const { totalPrice, totalCount } = useSelector(selectCart)
    return (
       <div className="header">
          <div className="container">

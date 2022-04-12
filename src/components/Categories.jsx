@@ -1,10 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { setCategoryId } from '../redux/reducers/filter-reducer'
+import { setCategoryId, selectCategoryId } from '../redux/reducers/filters-reducer'
 
 const categoryType = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
 
 export function Categories() {
-   const categoryId = useSelector(state => state.filter.categoryId)
+   const categoryId = useSelector(selectCategoryId)
    const dispatch = useDispatch()
 
    return (
