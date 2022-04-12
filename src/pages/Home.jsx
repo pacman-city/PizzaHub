@@ -46,7 +46,7 @@ export function Home() {
          navigate(`?${queryString}`)
       }
       isMounted.current = true
-   }, [sort, categoryId, currentPage])
+   }, [sort, categoryId, currentPage]) //eslint-disable-line
 
    useEffect(() => {
       if (window.location.search) {
@@ -55,13 +55,13 @@ export function Home() {
 
          isSearch.current = true
       }
-   }, [])
+   }, []) //eslint-disable-line
 
    useEffect(() => {
       window.scrollTo(0, 0)
       if (!isSearch.current) fetchPizzas()
       isSearch.current = false
-   }, [categoryId, sort, searchValue, currentPage])
+   }, [categoryId, sort, searchValue, currentPage]) //eslint-disable-line
 
    const productsArray = products && products.map(item => <ProductItem key={item.id} {...item} />)
    const skeletonsArray = [...Array(4)].map((_, i) => <Skeleton key={i} className="pizza-block" />)

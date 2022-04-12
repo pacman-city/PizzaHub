@@ -1,11 +1,27 @@
 import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import ContentLoader from 'react-content-loader'
+import { addItem } from '../redux/reducers/cart-reducer'
 
 const pastryTypes = ['тонкое', 'традиционное']
 
-export function ProductItem({ imageUrl, title, types, sizes, price, category, rating }) {
+export function ProductItem({ id, imageUrl, title, types, sizes, price, category, rating }) {
    const [activeType, setActiveType] = useState(types[0])
    const [activeSize, setActiveSize] = useState(sizes[0])
+   const dispatch = useDispatch()
+   const cartItem = useSelector(state => state.cart.items.find(obj => obj.id === id))
+
+   const onClickAdd = () => {
+      const item = {
+         id,
+         title,
+         price,
+         imageUrl,
+         type: pastryTypes[activeType],
+         size: activeSize,
+      }
+      dispatch(addItem(item))
+   }
 
    return (
       <div className="pizza-block">
@@ -38,8 +54,8 @@ export function ProductItem({ imageUrl, title, types, sizes, price, category, ra
                      fill="white"
                   />
                </svg>
-               <span>Добавить</span>
-               <i>2</i>
+               <span onClick={onClickAdd}>Добавить</span>
+               {cartItem && <i>{cartItem.count}</i>}
             </div>
          </div>
       </div>

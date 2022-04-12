@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { setSort } from '../redux/reducers/filter-reducer'
 
@@ -9,14 +9,23 @@ export function Sort() {
    const [isOpen, setIsOpen] = useState(false)
    const dispatch = useDispatch()
    const sort = useSelector(state => state.filter.sort)
+   const sortRef = useRef()
 
    const handleOnClick = key => {
       dispatch(setSort(key))
       setIsOpen(false)
    }
 
+   useEffect(() => {
+      const handleClickOutside = event => {
+         if (!event.path.includes(sortRef.current)) setIsOpen(false)
+      }
+      document.body.addEventListener('click', handleClickOutside)
+      return () => document.body.removeEventListener('click', handleClickOutside)
+   }, [])
+
    return (
-      <div className="sort">
+      <div className="sort" ref={sortRef}>
          <div className="sort__label">
             <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                <path
