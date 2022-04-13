@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import qs from 'qs'
 
 import { setFilters, selectFilters } from '../redux/reducers/filters-reducer'
@@ -63,7 +63,13 @@ export function Home() {
       isSearch.current = false
    }, [categoryId, sort, searchValue, currentPage]) //eslint-disable-line
 
-   const productsArray = status === 'success' && items.map(item => <ProductItem key={item.id} {...item} />)
+   const productsArray =
+      status === 'success' &&
+      items.map(item => (
+         <Link to={`/pizza/${item.id}`} key={item.id}>
+            <ProductItem {...item} />
+         </Link>
+      ))
    const skeletonsArray = [...Array(4)].map((_, i) => <Skeleton key={i} className="pizza-block" />)
 
    return (
