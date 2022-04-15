@@ -1,10 +1,11 @@
 import ReactPaginate from 'react-paginate'
-import { useDispatch } from 'react-redux'
-import { setCurrentPage } from '../../redux/reducers/filters-reducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCurrentPage, selectCurrentPage } from '../../redux/reducers/filters-reducer'
 import styles from './Pagination.module.scss'
 
-export function Pagination() {
+export const Pagination: React.FC = () => {
    const dispatch = useDispatch()
+   const currentPage = useSelector(selectCurrentPage)
 
    return (
       <ReactPaginate
@@ -15,7 +16,7 @@ export function Pagination() {
          onPageChange={event => dispatch(setCurrentPage(event.selected + 1))}
          pageRangeDisplayed={3}
          pageCount={3}
-         renderOnZeroPageCount={null}
+         forcePage={currentPage - 1}
       />
    )
 }

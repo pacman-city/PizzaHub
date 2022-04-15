@@ -1,10 +1,21 @@
 import { useDispatch } from 'react-redux'
 import { addItem, minusItem, removeItem } from '../redux/reducers/cart-reducer'
 
-export function CartItem({ id, title, price, count, imageUrl, type, size }) {
+interface Props {
+   id: string,
+   title: string,
+   price: number,
+   count: number,
+   imageUrl: string,
+   type: string,
+   size: number
+}
+
+export const CartItem: React.FC<Props> = (props) => {
+   const { id, title, price, count, imageUrl, type, size } = props
    const dispatch = useDispatch()
 
-   const onClickAdd = () => dispatch(addItem({ id }))
+   const onClickAdd = () => dispatch(addItem(props))
    const onClickRemove = () => dispatch(minusItem(id))
    const onClickClearItem = () => {
       if (window.confirm('Уверены что хотите удалить?')) dispatch(removeItem(id))

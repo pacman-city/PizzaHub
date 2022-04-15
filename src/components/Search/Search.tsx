@@ -4,24 +4,23 @@ import debounce from 'lodash.debounce'
 import { setSearchValue } from '../../redux/reducers/filters-reducer'
 import styles from './serch.module.scss'
 
-export function Search() {
+export const Search: React.FC = () => {
    const [searchInput, setSearchInput] = useState('')
    const dispatch = useDispatch()
 
-   const inputRef = useRef()
+   const inputRef = useRef<HTMLInputElement>(null)
 
    const onClickHandler = () => {
       dispatch(setSearchValue(''))
       setSearchInput('')
-      inputRef.current.focus()
+      inputRef.current?.focus()
    }
 
    const requestSearch = useCallback(
-      debounce(value => dispatch(setSearchValue(value)), 300),
-      []
-   )
+      debounce((value: string) => dispatch(setSearchValue(value)), 300),
+      [])
 
-   const onChangeHandler = event => {
+   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
       setSearchInput(event.target.value)
       requestSearch(event.target.value)
    }
@@ -40,7 +39,7 @@ export function Search() {
             ref={inputRef}
             className={styles.input}
             value={searchInput}
-            onChange={onChangeHandler}
+            onChange={changeHandler}
             type="text"
             placeholder="Поиск пиццы..."
          />

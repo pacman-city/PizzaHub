@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-export function CartEmpty() {
+export function CartEmpty(): JSX.Element {
    return (
       <div className="cart cart--empty">
          <h2>

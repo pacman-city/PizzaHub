@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import qs from 'qs'
 
+import { useAppDispatch } from '../redux/store'
 import { setFilters, selectFilters } from '../redux/reducers/filters-reducer'
 import { fetchProducts, selectProducts } from '../redux/reducers/products-reducer'
 
@@ -11,23 +12,24 @@ import { Sort } from '../components/Sort'
 import { ProductItem, Skeleton } from '../components/ProductItem'
 import { Pagination } from '../components/Pagination/Pagination'
 
-export function Home() {
-   const dispatch = useDispatch()
+export const Home: React.FC = () => {
+   const dispatch = useAppDispatch()
    const navigate = useNavigate()
    const isSearch = useRef(false)
    const isMounted = useRef(false)
 
    const { items, status } = useSelector(selectProducts)
-   const { categoryId, sort, searchValue, currentPage } = useSelector(selectFilters)
+   const { categoryId, sortBy, searchValue, currentPage } = useSelector(selectFilters)
 
    const getProducts = async () => {
-      const params = new URLSearchParams({
-         sortBy: sort,
-         limit: 4,
-         page: currentPage,
-      })
+      const params = new URLSearchParams(
+         {
+            'sortBy': sortBy,
+            'limit': '4',
+            'page': currentPage.toString(),
+         })
 
-      categoryId !== 0 && params.append('category', categoryId)
+      categoryId !== 0 && params.append('category', String(categoryId))
       searchValue && params.append('search', searchValue)
 
       const urlParams = params.toString()
@@ -40,19 +42,25 @@ export function Home() {
    useEffect(() => {
       if (isMounted.current) {
          const queryString = qs.stringify({
-            sort,
+            sortBy,
             categoryId,
             currentPage,
          })
          navigate(`?${queryString}`)
       }
       isMounted.current = true
-   }, [sort, categoryId, currentPage]) //eslint-disable-line
+   }, [sortBy, categoryId, currentPage]) //eslint-disable-line
 
    useEffect(() => {
       if (window.location.search) {
          const params = qs.parse(window.location.search.substring(1))
-         dispatch(setFilters(params))
+
+         dispatch(setFilters({
+            categoryId: Number(params.categoryId),
+            currentPage: Number(params.currentPage),
+            // @ts-ignore
+            sortBy: params.sortBy,
+         }))
 
          isSearch.current = true
       }
@@ -61,15 +69,9 @@ export function Home() {
    useEffect(() => {
       if (!isSearch.current) getProducts()
       isSearch.current = false
-   }, [categoryId, sort, searchValue, currentPage]) //eslint-disable-line
+   }, [categoryId, sortBy, searchValue, currentPage]) //eslint-disable-line
 
-   const productsArray =
-      status === 'success' &&
-      items.map(item => (
-         <Link to={`/pizza/${item.id}`} key={item.id}>
-            <ProductItem {...item} />
-         </Link>
-      ))
+   const productsArray = (status === 'success') && items.map((item: any) => <ProductItem {...item} key={item.id} />)
    const skeletonsArray = [...Array(4)].map((_, i) => <Skeleton key={i} className="pizza-block" />)
 
    return (

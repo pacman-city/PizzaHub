@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import { Header } from './Header'
 
-export function Layout() {
+export const Layout: React.FC = () => {
    return (
       <div className="wrapper">
          <Header />

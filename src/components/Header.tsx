@@ -5,7 +5,7 @@ import { selectCart } from '../redux/reducers/cart-reducer'
 
 import { Search } from './Search/Search'
 
-export function Header({ searchValue, setSearchValue }) {
+export function Header(): JSX.Element {
    const { totalPrice, totalCount } = useSelector(selectCart)
    const location = useLocation()
 
@@ -22,7 +22,7 @@ export function Header({ searchValue, setSearchValue }) {
                </div>
             </Link>
 
-            <Search searchValue={searchValue} setSearchValue={setSearchValue} />
+            <Search />
 
             <div className="header__cart">
                {location.pathname !== '/cart' && (

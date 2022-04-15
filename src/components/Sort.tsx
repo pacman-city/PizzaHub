@@ -2,23 +2,26 @@ import { useState, useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { setSort, selectSort } from '../redux/reducers/filters-reducer'
 
-const listItems = ['rating', 'price', 'title']
+type ListItems = 'rating' | 'price' | 'title'
+
+const listItems: ListItems[] = ['rating', 'price', 'title']
 const listTitles = { rating: 'популярности', price: 'цене', title: 'алфавиту' }
 
-export function Sort() {
+export function Sort(): JSX.Element {
    const [isOpen, setIsOpen] = useState(false)
-   const sortRef = useRef()
+   const sortRef = useRef<HTMLDivElement>(null)
    const dispatch = useDispatch()
-   const sort = useSelector(selectSort)
+   const sortBy: ListItems = useSelector(selectSort)
 
-   const handleOnClick = key => {
+   const handleClick = (key: ListItems) => {
       dispatch(setSort(key))
       setIsOpen(false)
    }
 
    useEffect(() => {
-      const handleClickOutside = event => {
-         if (!event.path.includes(sortRef.current)) setIsOpen(false)
+      const handleClickOutside = (event: MouseEvent) => {
+         const _event = event as MouseEvent & { path: Node[] }
+         if (sortRef.current && !_event.path.includes(sortRef.current)) setIsOpen(false)
       }
       document.body.addEventListener('click', handleClickOutside)
       return () => document.body.removeEventListener('click', handleClickOutside)
@@ -37,14 +40,14 @@ export function Sort() {
                />
             </svg>
             <b>Сортировка по:</b>
-            <span onClick={() => setIsOpen(!isOpen)}>{listTitles[sort]}</span>
+            <span onClick={() => setIsOpen(!isOpen)}>{listTitles[sortBy]}</span>
          </div>
 
          {isOpen && (
             <div className="sort__popup">
                <ul>
                   {listItems.map(key => (
-                     <li className={key === sort ? 'active' : ''} onClick={() => handleOnClick(key)} key={key}>
+                     <li className={key === sortBy ? 'active' : ''} onClick={() => handleClick(key)} key={key}>
                         {listTitles[key]}
                      </li>
                   ))}

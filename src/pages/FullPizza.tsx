@@ -2,9 +2,15 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-export function FullPizza() {
+interface IData {
+   imageUrl: string,
+   title: string,
+   price: number
+}
+
+export function FullPizza(): JSX.Element {
    const { id } = useParams()
-   const [data, setData] = useState(null)
+   const [data, setData] = useState<IData>()
    const navigate = useNavigate()
 
    useEffect(() => {
@@ -20,7 +26,7 @@ export function FullPizza() {
       fetchPizza()
    }, []) // eslint-disable-line
 
-   if (!data) return <p>Загрузка...</p>
+   if (!data) return <>Загрузка...</>
 
    return (
       <div className="container">

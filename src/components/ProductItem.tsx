@@ -1,11 +1,23 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import ContentLoader from 'react-content-loader'
 import { addItem, selectCartItem } from '../redux/reducers/cart-reducer'
 
+interface Props {
+   id: string,
+   imageUrl: string,
+   title: string,
+   types: number[],
+   sizes: number[],
+   price: number,
+   category: number,
+   rating: number
+}
+
 const pastryTypes = ['тонкое', 'традиционное']
 
-export function ProductItem({ id, imageUrl, title, types, sizes, price, category, rating }) {
+export const ProductItem: React.FC<Props> = ({ id, imageUrl, title, types, sizes, price, category, rating }) => {
    const [activeType, setActiveType] = useState(types[0])
    const [activeSize, setActiveSize] = useState(sizes[0])
    const dispatch = useDispatch()
@@ -25,7 +37,9 @@ export function ProductItem({ id, imageUrl, title, types, sizes, price, category
 
    return (
       <div className="pizza-block">
-         <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+         <Link to={`/pizza/${id}`}>
+            <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+         </Link>
          <h4 className="pizza-block__title">{title}</h4>
          <div className="pizza-block__selector">
             <ul>
@@ -45,7 +59,7 @@ export function ProductItem({ id, imageUrl, title, types, sizes, price, category
          </div>
          <div className="pizza-block__bottom">
             <div className="pizza-block__price">от {price} ₽</div>
-            <div className="button button--outline button--add">
+            <div className="button button--outline button--add" onClick={onClickAdd}>
                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                      d="M10.8 4.8H7.2V1.2C7.2 0.5373 6.6627 0 6 0C5.3373 0 4.8 0.5373 4.8 1.2V4.8H1.2C0.5373 4.8 0
@@ -54,7 +68,7 @@ export function ProductItem({ id, imageUrl, title, types, sizes, price, category
                      fill="white"
                   />
                </svg>
-               <span onClick={onClickAdd}>Добавить</span>
+               <span>Добавить</span>
                {cartItem && <i>{cartItem.count}</i>}
             </div>
          </div>
@@ -62,7 +76,7 @@ export function ProductItem({ id, imageUrl, title, types, sizes, price, category
    )
 }
 
-export function Skeleton(props) {
+export const Skeleton: React.FC<Record<any, any>> = (props) => {
    return (
       <ContentLoader
          speed={2}
