@@ -40,6 +40,10 @@ export const Home: React.FC = () => {
    }
 
    useEffect(() => {
+      if (!isMounted.current) getProducts();
+   }, []); //eslint-disable-line
+
+   useEffect(() => {
       if (isMounted.current) {
          const queryString = qs.stringify({
             sortBy,

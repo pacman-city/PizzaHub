@@ -18,7 +18,7 @@ export const Search: React.FC = () => {
 
    const requestSearch = useCallback(
       debounce((value: string) => dispatch(setSearchValue(value)), 300),
-      [])
+      []) //eslint-disable-line
 
    const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
       setSearchInput(event.target.value)

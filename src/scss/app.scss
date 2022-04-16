@@ -10,10 +10,10 @@ body {
 .wrapper {
    width: calc(100vw - 100px);
    height: 100%;
-   background-color: #fff;
-   margin: 50px auto;
-   border-radius: 10px;
+   margin: 0 auto;
+   // border-radius: 10px;
    max-width: 1400px;
+   background: #fff no-repeat top right / cover url('../../public//background.webp');
 
    @media screen and (max-width: 768px) {
       margin: 35px auto;
@@ -191,6 +191,16 @@ body {
                   display: none;
                }
             }
+
+            &:disabled {
+               opacity: 0.4;
+               transform: none;
+               background: none;
+
+               svg path {
+                  fill: #fe5f1e;
+               }
+            }
          }
 
          b {
@@ -257,7 +267,7 @@ body {
 
             &:last-of-type {
                b {
-                  color: $orange;
+                  color: $accent;
                }
             }
          }

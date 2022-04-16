@@ -20,8 +20,8 @@ export function Sort(): JSX.Element {
 
    useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
-         const _event = event as MouseEvent & { path: Node[] }
-         if (sortRef.current && !_event.path.includes(sortRef.current)) setIsOpen(false)
+         const _event = event as MouseEvent
+         if (sortRef.current && !_event.composedPath().includes(sortRef.current)) setIsOpen(false)
       }
       document.body.addEventListener('click', handleClickOutside)
       return () => document.body.removeEventListener('click', handleClickOutside)
